@@ -25,6 +25,14 @@ describe('VoterComponent', () => {
     let de = fixtureComponent.debugElement.query(By.css('.vote-count'));
     let element: HTMLElement = de.nativeElement;
     expect(element.innerText).toContain('21');
-
   });
+
+  it('should highlight the upvoted button if i upvoted', () => {
+    voterComponent.myVote = 1;
+    fixtureComponent.detectChanges();
+    
+    let de = fixtureComponent.debugElement.query(By.css('.glyphicon-menu-up'));
+    expect(de.classes['highlighted']).toBeTruthy();
+  });
+
 });
