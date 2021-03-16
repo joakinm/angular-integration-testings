@@ -5,14 +5,21 @@ import { DebugElement } from '@angular/core';
 
 import { UserDetailsComponent } from './user-details.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 
 class RouterStub {
   navigate(params) {
   }
 }
 class ActivatedRouteStub {
-  params: Observable<any> = EMPTY;
+  private subject = new Subject();
+
+  push(value) {
+    this.subject.next(value);
+  }
+  get params() {
+    return this.subject.asObservable();
+  }
 }
 describe('UserDetailsComponent', () => {
   let component: UserDetailsComponent;
@@ -37,9 +44,17 @@ describe('UserDetailsComponent', () => {
 
   it('should redirect the user to the users page after saving', () => {
     let router = TestBed.inject(Router);
-    let spy = spyOn(router,'navigate');
+    let spy = spyOn(router, 'navigate');
     component.save();
     
     expect(spy).toHaveBeenCalledWith(['users']);
+  });
+  it('should redirect the user to the users page after saving', () => {
+    let router = TestBed.inject(Router);
+    let spy = spyOn(router, 'navigate');
+
+    let route: ActivatedRouteStub = TestBed.get(ActivatedRoute);
+    route.push({id: 0});
+    expect(spy).toHaveBeenCalledWith(['not-found']);
   });
 });
