@@ -15,14 +15,14 @@ export class TodoService {
 
   getTodos() { 
     return this.http.get('...').pipe( map(
-      (response: any) => response.json()
+      (response: any) => response
       ));
   }
 
   getTodosPromise() {
     return this.http.get('...').pipe( map(
       (response: any) => response.json()
-      ));
+      )).toPromise();
   }
 
   delete(id) {

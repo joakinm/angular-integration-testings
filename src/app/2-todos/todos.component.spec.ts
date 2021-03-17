@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
@@ -33,15 +33,13 @@ describe('TodosComponent', () => {
     component = fixture.componentInstance;
   });
   
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-  
-  it('should create a new todoService call', () => {
+  it('should create a new todoService call', fakeAsync(() => {
     let todo = [1,2,3];
     const service = TestBed.inject(TodoService);
-    spyOn(service, 'getTodos').and.returnValue( of(todo) );
+    spyOn(service, 'getTodosPromise').and.returnValue( Promise.resolve(todo) );
     fixture.detectChanges();
+    tick();
+    
     expect(component.todos.length).toBe(3);
-  });
+  }));
 });
