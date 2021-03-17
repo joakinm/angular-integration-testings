@@ -1,11 +1,9 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import { UserDetailsComponent } from './user-details.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 class RouterStub {
   navigate(params) {
@@ -17,10 +15,12 @@ class ActivatedRouteStub {
   push(value) {
     this.subject.next(value);
   }
+
   get params() {
     return this.subject.asObservable();
   }
 }
+
 describe('UserDetailsComponent', () => {
   let component: UserDetailsComponent;
   let fixture: ComponentFixture<UserDetailsComponent>;
@@ -49,6 +49,7 @@ describe('UserDetailsComponent', () => {
     
     expect(spy).toHaveBeenCalledWith(['users']);
   });
+
   it('should redirect the user to the users page after saving', () => {
     let router = TestBed.inject(Router);
     let spy = spyOn(router, 'navigate');
